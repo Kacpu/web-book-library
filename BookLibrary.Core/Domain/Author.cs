@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace BookLibrary.Core.Domain
 {
-    public class Author
+    public class Author : Entity
     {
-        public int Id { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
         public string Description { get; set; }

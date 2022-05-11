@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.32413.511
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookLibrary.Core", "BookLibrary.Core\BookLibrary.Core.csproj", "{F7DF8FAA-C6F8-43EB-8904-53EC5B86179E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookLibrary.Core", "BookLibrary.Core\BookLibrary.Core.csproj", "{F7DF8FAA-C6F8-43EB-8904-53EC5B86179E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookLibrary.Infrastructure", "BookLibrary.Infrastructure\BookLibrary.Infrastructure.csproj", "{197754F5-0F96-44CB-98BE-A066378FE2EE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookLibrary.WebAPI", "BookLibrary.WebAPI\BookLibrary.WebAPI.csproj", "{A7F0BA16-C825-45CF-A4CD-B9E46549F925}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,14 @@ Global
 		{F7DF8FAA-C6F8-43EB-8904-53EC5B86179E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F7DF8FAA-C6F8-43EB-8904-53EC5B86179E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F7DF8FAA-C6F8-43EB-8904-53EC5B86179E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{197754F5-0F96-44CB-98BE-A066378FE2EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{197754F5-0F96-44CB-98BE-A066378FE2EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{197754F5-0F96-44CB-98BE-A066378FE2EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{197754F5-0F96-44CB-98BE-A066378FE2EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A7F0BA16-C825-45CF-A4CD-B9E46549F925}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7F0BA16-C825-45CF-A4CD-B9E46549F925}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7F0BA16-C825-45CF-A4CD-B9E46549F925}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7F0BA16-C825-45CF-A4CD-B9E46549F925}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
