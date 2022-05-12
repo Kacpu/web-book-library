@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace BookLibrary.Infrastructure.DTO
 {
-    public class AuthorResponse
+    public class AuthorCreate
     {
-        public int Id { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
         public string Description { get; set; }
