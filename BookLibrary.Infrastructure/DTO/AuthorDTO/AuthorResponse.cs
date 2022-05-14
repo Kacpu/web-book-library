@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BookLibrary.Infrastructure.DTO
+namespace BookLibrary.Infrastructure.DTO.AuthorDTO
 {
     public class AuthorResponse
     {

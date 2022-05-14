@@ -4,12 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BookLibrary.Core.Domain
+namespace BookLibrary.Infrastructure.DTO.BookSeriesDTO
 {
-    public class BookSeries : Entity
+    public class  BookSeriesUpdate
     {
         public string Name { get; set; }
-
-        public ICollection<Book> Books { get; set; }
     }
 }

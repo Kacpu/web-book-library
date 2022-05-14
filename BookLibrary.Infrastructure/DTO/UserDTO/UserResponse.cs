@@ -4,12 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BookLibrary.Core.Domain
+namespace BookLibrary.Infrastructure.DTO.UserDTO
 {
-    public class User : Entity
+    public class UserResponse
     {
+        public int Id {get; set;}
         public string Username { get; set; }
-
-        public ICollection<Library> Libraries { get; set; }
     }
 }

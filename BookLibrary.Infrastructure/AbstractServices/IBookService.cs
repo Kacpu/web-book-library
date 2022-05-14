@@ -1,6 +1,4 @@
-﻿using BookLibrary.Infrastructure.DTO;
-using BookLibrary.Infrastructure.DTO.AuthorDTO;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BookLibrary.Infrastructure.AbstractServices
 {
-    public interface IAuthorService
+    public interface IBookService
     {
         Task<AuthorResponse> GetByIdAsync(int id);
         Task<IEnumerable<AuthorResponse>> BrowseAllAsync(string name = null, string surname = null);

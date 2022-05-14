@@ -2,6 +2,7 @@
 using BookLibrary.Core.Repositories;
 using BookLibrary.Infrastructure.AbstractServices;
 using BookLibrary.Infrastructure.DTO;
+using BookLibrary.Infrastructure.DTO.AuthorDTO;
 using BookLibrary.Infrastructure.Exceptions;
 using LinqKit;
 using System;

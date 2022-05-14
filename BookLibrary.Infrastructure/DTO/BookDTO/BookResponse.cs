@@ -1,13 +1,15 @@
-﻿using System;
+﻿using BookLibrary.Infrastructure.DTO.CategoryDTO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BookLibrary.Core.Domain
+namespace BookLibrary.Infrastructure.DTO.BookDTO
 {
-    public class Book : Entity
+    public class BookResponse
     {
+        public int Id { get; set; }
         public string Title { get; set; }
         public DateTime ReleaseDate { get; set; }
         public string Description { get; set; }
@@ -15,14 +17,14 @@ namespace BookLibrary.Core.Domain
         public int NumberOfPages { get; set; }
 
         public int AuthorId { get; set; }
-        public Author Author { get; set; }
+        public string Author { get; set; }
 
         public int PublisherId { get; set; }
-        public Publisher Publisher { get; set; }
+        public string PublisherName { get; set; }
 
         public int? BookSeriesId { get; set; }
-        public BookSeries BookSeries { get; set; }
+        public string BookSeriesName { get; set; }
 
-        public ICollection<Category> Categories { get; set; }
+        public ICollection<CategoryResponse> Categories { get; set; }
     }
 }

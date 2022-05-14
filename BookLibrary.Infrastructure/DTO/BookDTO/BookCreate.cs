@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BookLibrary.Core.Domain
+namespace BookLibrary.Infrastructure.DTO.BookDTO
 {
-    public class Book : Entity
+    public class BookCreate
     {
         public string Title { get; set; }
         public DateTime ReleaseDate { get; set; }
@@ -15,14 +15,9 @@ namespace BookLibrary.Core.Domain
         public int NumberOfPages { get; set; }
 
         public int AuthorId { get; set; }
-        public Author Author { get; set; }
-
         public int PublisherId { get; set; }
-        public Publisher Publisher { get; set; }
-
         public int? BookSeriesId { get; set; }
-        public BookSeries BookSeries { get; set; }
 
-        public ICollection<Category> Categories { get; set; }
+        public ICollection<int> CategoriesId { get; set; }
     }
 }
