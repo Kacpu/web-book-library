@@ -70,7 +70,7 @@ namespace BookLibrary.Infrastructure.DTO
                 PublisherName = book.Publisher?.Name,
                 BookSeriesId = book.BookSeriesId,
                 BookSeriesName = book.BookSeries?.Name,
-                Categories = book.Categories.Select(c => c.ToResponse()).ToList(),
+                Categories = book.Categories?.Select(c => c.ToResponse()).ToList(),
             };
         }
 

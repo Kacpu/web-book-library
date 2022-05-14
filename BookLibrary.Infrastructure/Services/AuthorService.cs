@@ -50,7 +50,7 @@ namespace BookLibrary.Infrastructure.Services
             }
 
             var authors = await _authorRepository.BrowseAllAsync(filter);
-            return await Task.FromResult(authors.Select(a => a.ToResponse()));
+            return await Task.FromResult(authors.Select(x => x.ToResponse()));
         }
 
         public async Task<AuthorResponse> CreateAsync(AuthorCreate authorCreate)

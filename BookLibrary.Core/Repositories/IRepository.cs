@@ -12,8 +12,8 @@ namespace BookLibrary.Core.Repositories
         Task<T> GetByIdAsync(int id, string[] includeProperties = null);
         Task<IEnumerable<T>> BrowseAllAsync(
             Expression<Func<T, bool>> filter = null,
-            Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
-            string[] includeProperties = null);
+            string[] includeProperties = null,
+            Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null);
         Task<T> CreateAsync(T entity);
         Task<T> UpdateAsync(T entity);
         Task DeleteAsync(int id);

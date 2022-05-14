@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BookLibrary.Infrastructure.DTO.BookDTO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,10 +9,11 @@ namespace BookLibrary.Infrastructure.AbstractServices
 {
     public interface IBookService
     {
-        Task<AuthorResponse> GetByIdAsync(int id);
-        Task<IEnumerable<AuthorResponse>> BrowseAllAsync(string name = null, string surname = null);
-        Task<AuthorResponse> CreateAsync(AuthorCreate authorCreate);
-        Task<AuthorResponse> UpdateAsync(int id, AuthorUpdate authorUpdate);
+        Task<BookResponse> GetByIdAsync(int id);
+        Task<IEnumerable<BookResponse>> BrowseAllAsync(string title = null, int? authorId = null, int? publisherId = null,
+            int? bookSeriesId = null, int? categoryId = null);
+        Task<BookResponse> CreateAsync(BookCreate bookCreate);
+        Task<BookResponse> UpdateAsync(int id, BookUpdate bookUpdate);
         Task DeleteAsync(int id);
     }
 }

@@ -33,8 +33,8 @@ namespace BookLibrary.Infrastructure.Repositories
             return await Task.FromResult(await query.FirstOrDefaultAsync(x => x.Id == id));
         }
 
-        public async Task<IEnumerable<T>> BrowseAllAsync(Expression<Func<T, bool>> filter = null,
-            Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, string[] includeProperties = null)
+        public async Task<IEnumerable<T>> BrowseAllAsync(Expression<Func<T, bool>> filter = null, string[] includeProperties = null,
+            Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null)
         {
             IQueryable<T> query = _dbSet;
 
