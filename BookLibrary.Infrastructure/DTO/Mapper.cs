@@ -115,9 +115,8 @@ namespace BookLibrary.Infrastructure.DTO
             {
                 Name = library.Name,
                 Description = library.Description,
-                CreationDate = library.CreationDate,
                 IsPrivate = library.IsPrivate,
-                UserId = library.OwnerId
+                OwnerId = library.OwnerId
             };
         }
 
@@ -130,8 +129,8 @@ namespace BookLibrary.Infrastructure.DTO
                 Description = library.Description,
                 CreationDate = library.CreationDate,
                 IsPrivate = library.IsPrivate,
-                OwnerId = library.UserId,
-                OwnerName = library.User?.Username,
+                OwnerId = library.OwnerId,
+                OwnerName = library.Owner?.Username,
                 BookNumbers = library.Books?.Count ?? 0,
             };
         }

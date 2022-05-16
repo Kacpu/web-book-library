@@ -48,10 +48,10 @@ namespace BookLibrary.Infrastructure.Services
 
             if (userId != null)
             {
-                filter = filter.And(l => l.UserId == userId);
+                filter = filter.And(l => l.OwnerId == userId);
             }
 
-            string[] includeProperties = { "User", "Books" };
+            string[] includeProperties = { "Owner", "Books" };
 
             var ls = await _libraryRepository.BrowseAllAsync(filter, includeProperties);
             return await Task.FromResult(ls.Select(x => x.ToResponse()));
@@ -73,7 +73,6 @@ namespace BookLibrary.Infrastructure.Services
             }
 
             l.Name = !string.IsNullOrEmpty(libraryUpdate.Name) ? libraryUpdate.Name : l.Name;
-            l.CreationDate = libraryUpdate.CreationDate ?? l.CreationDate;
             l.Description = !string.IsNullOrEmpty(libraryUpdate.Description) ? libraryUpdate.Description : l.Description;
             l.IsPrivate = libraryUpdate.IsPrivate ?? l.IsPrivate;
 
