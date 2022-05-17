@@ -17,15 +17,17 @@ namespace BookLibrary.Infrastructure.Services
     public class LibraryService : ILibraryService
     {
         private readonly IRepository<Library> _libraryRepository;
+        private readonly IRepository<Book> _bookRepository;
 
-        public LibraryService(IRepository<Library> libraryReposiotry)
+        public LibraryService(IRepository<Library> libraryReposiotry, IRepository<Book> bookReposiotry)
         {
             _libraryRepository = libraryReposiotry;
+            _bookRepository = bookReposiotry;
         }
 
         public async Task<LibraryResponse> GetByIdAsync(int id)
         {
-            string[] includeProperties = { "User", "Books" };
+            string[] includeProperties = { "Owner", "Books" };
 
             var library = await _libraryRepository.GetByIdAsync(id, includeProperties);
 
@@ -39,7 +41,7 @@ namespace BookLibrary.Infrastructure.Services
 
         public async Task<IEnumerable<LibraryResponse>> BrowseAllAsync(string name, int? userId)
         {
-            Expression<Func<Library, bool>> filter = PredicateBuilder.New<Library>();
+            Expression<Func<Library, bool>> filter = PredicateBuilder.New<Library>(true);
 
             if (!string.IsNullOrEmpty(name))
             {
@@ -59,6 +61,19 @@ namespace BookLibrary.Infrastructure.Services
 
         public async Task<LibraryResponse> CreateAsync(LibraryCreate libraryCreate)
         {
+            if (!await _libraryRepository.IsExist<User>(libraryCreate.OwnerId))
+            {
+                throw new NotFoundException("owner not found");
+            }
+
+            var checkL = await _libraryRepository
+                .BrowseAllAsync(x => x.Name == libraryCreate.Name);
+
+            if (checkL.Any())
+            {
+                throw new BadRequestException("library already exists");
+            }
+
             var l = await _libraryRepository.CreateAsync(libraryCreate.ToDomain());
             return await Task.FromResult(l.ToResponse());
         }
@@ -72,7 +87,19 @@ namespace BookLibrary.Infrastructure.Services
                 throw new NotFoundException("library not found");
             }
 
-            l.Name = !string.IsNullOrEmpty(libraryUpdate.Name) ? libraryUpdate.Name : l.Name;
+            if (!string.IsNullOrEmpty(libraryUpdate.Name))
+            {
+                var checkL = await _libraryRepository
+                .BrowseAllAsync(x => x.Name == libraryUpdate.Name);
+
+                if (checkL.Any())
+                {
+                    throw new BadRequestException("library already exists");
+                }
+
+                l.Name = libraryUpdate.Name;
+            }
+
             l.Description = !string.IsNullOrEmpty(libraryUpdate.Description) ? libraryUpdate.Description : l.Description;
             l.IsPrivate = libraryUpdate.IsPrivate ?? l.IsPrivate;
 
@@ -90,6 +117,70 @@ namespace BookLibrary.Infrastructure.Services
             }
 
             await _libraryRepository.DeleteAsync(id);
+        }
+
+        public async Task AddBookAsync(int libId, int bookId)
+        {
+            string[] includeProperties = { "Books" };
+
+            var library = await _libraryRepository.GetByIdAsync(libId, includeProperties);
+
+            if (library is null)
+            {
+                throw new NotFoundException("library not found");
+            }
+
+            var book = await _bookRepository.GetByIdAsync(bookId);
+
+            if (book is null)
+            {
+                throw new NotFoundException("book not found");
+            }
+
+            if(library.Books is null)
+            {
+                library.Books = new List<Book>() { book };
+            }
+            else if (library.Books.Contains(book))
+            {
+                throw new BadRequestException("book is already in the library");
+            }
+            else
+            {
+                library.Books.Add(book);
+            }
+
+            await _libraryRepository.SaveAsync();
+        }
+
+        public async Task RemoveBookAsync(int libId, int bookId)
+        {
+            string[] includeProperties = { "Books" };
+
+            var library = await _libraryRepository.GetByIdAsync(libId, includeProperties);
+
+            if (library is null)
+            {
+                throw new NotFoundException("library not found");
+            }
+
+            var book = await _bookRepository.GetByIdAsync(bookId);
+
+            if (book is null)
+            {
+                throw new NotFoundException("book not found");
+            }
+
+            if (library.Books?.Contains(book) ?? false)
+            {
+                library.Books.Remove(book);
+            }
+            else
+            {
+                throw new BadRequestException("book is not in the library");
+            }
+
+            await _libraryRepository.SaveAsync();
         }
     }
 }

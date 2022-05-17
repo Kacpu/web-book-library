@@ -37,7 +37,7 @@ namespace BookLibrary.Infrastructure.Services
 
         public async Task<IEnumerable<AuthorResponse>> BrowseAllAsync(string name, string surname)
         {
-            Expression<Func<Author, bool>> filter = PredicateBuilder.New<Author>();
+            Expression<Func<Author, bool>> filter = PredicateBuilder.New<Author>(true);
 
             if (!string.IsNullOrEmpty(name))
             {
@@ -55,6 +55,14 @@ namespace BookLibrary.Infrastructure.Services
 
         public async Task<AuthorResponse> CreateAsync(AuthorCreate authorCreate)
         {
+            var authors = await _authorRepository
+                .BrowseAllAsync(author => author.Name == authorCreate.Name && author.Surname == authorCreate.Surname);
+
+            if(authors.Any())
+            {
+                throw new BadRequestException("author already exists");
+            }
+
             var a = await _authorRepository.CreateAsync(authorCreate.ToDomain());
             return await Task.FromResult(a.ToResponse());
         }
@@ -72,6 +80,17 @@ namespace BookLibrary.Infrastructure.Services
             a.Surname = !string.IsNullOrEmpty(authorUpdate.Surname) ? authorUpdate.Surname : a.Surname;
             a.Description = !string.IsNullOrEmpty(authorUpdate.Description) ? authorUpdate.Description : a.Description;
             a.DateOfBirth = authorUpdate.DateOfBirth ?? a.DateOfBirth;
+
+            if(!string.IsNullOrEmpty(authorUpdate.Name) || !string.IsNullOrEmpty(authorUpdate.Surname))
+            {
+                var authors = await _authorRepository
+                .BrowseAllAsync(author => author.Name == a.Name && author.Surname == a.Surname);
+
+                if (authors.Any())
+                {
+                    throw new BadRequestException("author already exists");
+                }
+            }
 
             a = await _authorRepository.UpdateAsync(a);
             return await Task.FromResult(a.ToResponse());

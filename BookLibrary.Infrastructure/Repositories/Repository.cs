@@ -25,16 +25,19 @@ namespace BookLibrary.Infrastructure.Repositories
         {
             IQueryable<T> query = _dbSet;
 
-            foreach(var includeProperty in includeProperties)
+            if (includeProperties != null)
             {
-                query = query.Include(includeProperty);
+                foreach (var includeProperty in includeProperties)
+                {
+                    query = query.Include(includeProperty);
+                }
             }
 
             return await Task.FromResult(await query.FirstOrDefaultAsync(x => x.Id == id));
         }
 
-        public async Task<IEnumerable<T>> BrowseAllAsync(Expression<Func<T, bool>> filter = null, string[] includeProperties = null,
-            Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null)
+        public async Task<IEnumerable<T>> BrowseAllAsync(Expression<Func<T, bool>> filter, string[] includeProperties,
+            Func<IQueryable<T>, IOrderedQueryable<T>> orderBy)
         {
             IQueryable<T> query = _dbSet;
 
@@ -43,9 +46,12 @@ namespace BookLibrary.Infrastructure.Repositories
                 query = query.Where(filter);
             }
 
-            foreach (var includeProperty in includeProperties)
+            if(includeProperties != null)
             {
-                query = query.Include(includeProperty);
+                foreach (var includeProperty in includeProperties)
+                {
+                    query = query.Include(includeProperty);
+                }
             }
 
             if (orderBy != null)
@@ -74,6 +80,17 @@ namespace BookLibrary.Infrastructure.Repositories
         {
             var entity = await _dbSet.FirstOrDefaultAsync(c => c.Id == id);
             _appDbContext.Remove(entity);
+            await _appDbContext.SaveChangesAsync();
+        }
+
+        public async Task<bool> IsExist<CheckT>(int id) where CheckT : Entity
+        {
+            var e = await _appDbContext.FindAsync<CheckT>(id);
+            return await Task.FromResult(e is not null);
+        }
+
+        public async Task SaveAsync()
+        {
             await _appDbContext.SaveChangesAsync();
         }
     }

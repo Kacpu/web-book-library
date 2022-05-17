@@ -45,12 +45,12 @@ namespace BookLibrary.Infrastructure.DTO
             {
                 Title = book.Title,
                 Description = book.Description,
-                ReleaseDate = book.ReleaseDate,
+                ReleaseYear = book.ReleaseYear,
                 Language = book.Language,
                 NumberOfPages = book.NumberOfPages,
                 AuthorId = book.AuthorId,
                 PublisherId = book.PublisherId,
-                BookSeriesId = book.BookSeriesId,
+                BookSeriesId = book.BookSeriesId
             };
         }
 
@@ -61,7 +61,7 @@ namespace BookLibrary.Infrastructure.DTO
                 Id = book.Id,
                 Title = book.Title,
                 Description = book.Description,
-                ReleaseDate = book.ReleaseDate,
+                ReleaseYear = book.ReleaseYear,
                 Language = book.Language,
                 NumberOfPages = book.NumberOfPages,
                 AuthorId = book.AuthorId,
@@ -88,7 +88,7 @@ namespace BookLibrary.Infrastructure.DTO
             {
                 Id = bookSeries.Id,
                 Name = bookSeries.Name,
-                NumberOfBooks = bookSeries?.Books.Count ?? 0
+                NumberOfBooks = bookSeries.Books?.Count ?? 0
             };
         }
 

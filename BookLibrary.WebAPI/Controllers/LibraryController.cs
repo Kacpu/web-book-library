@@ -53,5 +53,19 @@ namespace BookLibrary.WebAPI.Controllers
             await _libraryService.DeleteAsync(id);
             return NoContent();
         }
+
+        [HttpPost("{libId}/book/{bookId}")]
+        public async Task<IActionResult> AddBookToLibrary(int libId, int bookId)
+        {
+            await _libraryService.AddBookAsync(libId, bookId);
+            return Ok("book added to library");
+        }
+
+        [HttpDelete("{libId}/book/{bookId}")]
+        public async Task<IActionResult> RemoveBookFromLibrary(int libId, int bookId)
+        {
+            await _libraryService.RemoveBookAsync(libId, bookId);
+            return Ok("book removed from library");
+        }
     }
 }

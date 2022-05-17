@@ -37,7 +37,7 @@ namespace BookLibrary.Infrastructure.Services
 
         public async Task<IEnumerable<PublisherResponse>> BrowseAllAsync(string name)
         {
-            Expression<Func<Publisher, bool>> filter = PredicateBuilder.New<Publisher>();
+            Expression<Func<Publisher, bool>> filter = PredicateBuilder.New<Publisher>(true);
 
             if (!string.IsNullOrEmpty(name))
             {
@@ -50,6 +50,14 @@ namespace BookLibrary.Infrastructure.Services
 
         public async Task<PublisherResponse> CreateAsync(PublisherCreate publisherCreate)
         {
+            var checkP = await _publisherRepository
+                .BrowseAllAsync(x => x.Name == publisherCreate.Name);
+
+            if (checkP.Any())
+            {
+                throw new BadRequestException("publisher already exists");
+            }
+
             var p = await _publisherRepository.CreateAsync(publisherCreate.ToDomain());
             return await Task.FromResult(p.ToResponse());
         }
@@ -63,9 +71,20 @@ namespace BookLibrary.Infrastructure.Services
                 throw new NotFoundException("publisher not found");
             }
 
-            p.Name = !string.IsNullOrEmpty(publisherUpdate.Name) ? publisherUpdate.Name : p.Name;
+            if (!string.IsNullOrEmpty(publisherUpdate.Name))
+            {
+                var checkP = await _publisherRepository
+                    .BrowseAllAsync(x => x.Name == publisherUpdate.Name);
 
-            p = await _publisherRepository.UpdateAsync(p);
+                if (checkP.Any())
+                {
+                    throw new BadRequestException("publisher already exists");
+                }
+
+                p.Name = publisherUpdate.Name;
+                p = await _publisherRepository.UpdateAsync(p);
+            }
+
             return await Task.FromResult(p.ToResponse());
         }
 

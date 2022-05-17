@@ -14,5 +14,7 @@ namespace BookLibrary.Infrastructure.AbstractServices
         Task<LibraryResponse> CreateAsync(LibraryCreate libraryCreate);
         Task<LibraryResponse> UpdateAsync(int id, LibraryUpdate libraryUpdate);
         Task DeleteAsync(int id);
+        Task AddBookAsync(int libId, int bookId);
+        Task RemoveBookAsync(int libId, int bookId);
     }
 }

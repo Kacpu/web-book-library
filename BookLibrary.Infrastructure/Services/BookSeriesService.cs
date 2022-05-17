@@ -39,7 +39,7 @@ namespace BookLibrary.Infrastructure.Services
 
         public async Task<IEnumerable<BookSeriesResponse>> BrowseAllAsync(string name)
         {
-            Expression<Func<BookSeries, bool>> filter = PredicateBuilder.New<BookSeries>();
+            Expression<Func<BookSeries, bool>> filter = PredicateBuilder.New<BookSeries>(true);
 
             if (!string.IsNullOrEmpty(name))
             {
@@ -54,6 +54,14 @@ namespace BookLibrary.Infrastructure.Services
 
         public async Task<BookSeriesResponse> CreateAsync(BookSeriesCreate bookSeriesCreate)
         {
+            var checkBs = await _bookSeriesRepository
+                .BrowseAllAsync(x => x.Name == bookSeriesCreate.Name);
+
+            if (checkBs.Any())
+            {
+                throw new BadRequestException("book series already exists");
+            }
+
             var bs = await _bookSeriesRepository.CreateAsync(bookSeriesCreate.ToDomain());
             return await Task.FromResult(bs.ToResponse());
         }
@@ -67,9 +75,20 @@ namespace BookLibrary.Infrastructure.Services
                 throw new NotFoundException("book series not found");
             }
 
-            bs.Name = !string.IsNullOrEmpty(bookSeriesUpdate.Name) ? bookSeriesUpdate.Name : bs.Name;
+            if (!string.IsNullOrEmpty(bookSeriesUpdate.Name))
+            {
+                var checkBs = await _bookSeriesRepository
+                    .BrowseAllAsync(x => x.Name == bookSeriesUpdate.Name);
 
-            bs = await _bookSeriesRepository.UpdateAsync(bs);
+                if (checkBs.Any())
+                {
+                    throw new BadRequestException("book series already exists");
+                }
+
+                bs.Name = bookSeriesUpdate.Name;
+                bs = await _bookSeriesRepository.UpdateAsync(bs);
+            }
+            
             return await Task.FromResult(bs.ToResponse());
         }
 

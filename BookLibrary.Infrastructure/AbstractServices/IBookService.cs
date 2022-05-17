@@ -11,7 +11,7 @@ namespace BookLibrary.Infrastructure.AbstractServices
     {
         Task<BookResponse> GetByIdAsync(int id);
         Task<IEnumerable<BookResponse>> BrowseAllAsync(string title = null, int? authorId = null, int? publisherId = null,
-            int? bookSeriesId = null, int? categoryId = null);
+            int? bookSeriesId = null, int? categoryId = null, int? libraryId = null);
         Task<BookResponse> CreateAsync(BookCreate bookCreate);
         Task<BookResponse> UpdateAsync(int id, BookUpdate bookUpdate);
         Task DeleteAsync(int id);

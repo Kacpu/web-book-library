@@ -37,7 +37,7 @@ namespace BookLibrary.Infrastructure.Services
 
         public async Task<IEnumerable<UserResponse>> BrowseAllAsync(string username)
         {
-            Expression<Func<User, bool>> filter = PredicateBuilder.New<User>();
+            Expression<Func<User, bool>> filter = PredicateBuilder.New<User>(true);
 
             if (!string.IsNullOrEmpty(username))
             {
@@ -50,6 +50,14 @@ namespace BookLibrary.Infrastructure.Services
 
         public async Task<UserResponse> CreateAsync(UserCreate userCreate)
         {
+            var checkU = await _userRepository
+                .BrowseAllAsync(x => x.Username == userCreate.Username);
+
+            if (checkU.Any())
+            {
+                throw new BadRequestException("user already exists");
+            }
+
             var u = await _userRepository.CreateAsync(userCreate.ToDomain());
             return await Task.FromResult(u.ToResponse());
         }
@@ -63,9 +71,20 @@ namespace BookLibrary.Infrastructure.Services
                 throw new NotFoundException("user not found");
             }
 
-            u.Username = !string.IsNullOrEmpty(userUpdate.Username) ? userUpdate.Username : u.Username;
+            if (!string.IsNullOrEmpty(userUpdate.Username))
+            {
+                var checkU = await _userRepository
+                    .BrowseAllAsync(x => x.Username == userUpdate.Username);
 
-            u = await _userRepository.UpdateAsync(u);
+                if (checkU.Any())
+                {
+                    throw new BadRequestException("user already exists");
+                }
+
+                u.Username = userUpdate.Username;
+                u = await _userRepository.UpdateAsync(u);
+            }
+
             return await Task.FromResult(u.ToResponse());
         }
 

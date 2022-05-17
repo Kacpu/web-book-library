@@ -27,9 +27,10 @@ namespace BookLibrary.WebAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> BrowseBooks(string title, int? authorId, int? publisherId, int? bookSeriesId, int? categoryId)
+        public async Task<IActionResult> BrowseBooks(string title, int? authorId, int? publisherId,
+            int? bookSeriesId, int? categoryId, int? libraryId)
         {
-            var b = await _bookService.BrowseAllAsync(title, authorId, publisherId, bookSeriesId, categoryId);
+            var b = await _bookService.BrowseAllAsync(title, authorId, publisherId, bookSeriesId, categoryId, libraryId);
             return Json(b);
         }
 

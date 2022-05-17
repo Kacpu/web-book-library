@@ -37,7 +37,7 @@ namespace BookLibrary.Infrastructure.Services
 
         public async Task<IEnumerable<CategoryResponse>> BrowseAllAsync(string name)
         {
-            Expression<Func<Category, bool>> filter = PredicateBuilder.New<Category>();
+            Expression<Func<Category, bool>> filter = PredicateBuilder.New<Category>(true);
 
             if (!string.IsNullOrEmpty(name))
             {
@@ -50,6 +50,14 @@ namespace BookLibrary.Infrastructure.Services
 
         public async Task<CategoryResponse> CreateAsync(CategoryCreate categoryCreate)
         {
+            var checkC = await _categoryRepository
+                .BrowseAllAsync(x => x.Name == categoryCreate.Name);
+
+            if (checkC.Any())
+            {
+                throw new BadRequestException("category already exists");
+            }
+
             var c = await _categoryRepository.CreateAsync(categoryCreate.ToDomain());
             return await Task.FromResult(c.ToResponse());
         }
@@ -63,9 +71,20 @@ namespace BookLibrary.Infrastructure.Services
                 throw new NotFoundException("category not found");
             }
 
-            c.Name = !string.IsNullOrEmpty(categoryUpdate.Name) ? categoryUpdate.Name : c.Name;
+            if (!string.IsNullOrEmpty(categoryUpdate.Name))
+            {
+                var checkC = await _categoryRepository
+                    .BrowseAllAsync(x => x.Name == categoryUpdate.Name);
 
-            c = await _categoryRepository.UpdateAsync(c);
+                if (checkC.Any())
+                {
+                    throw new BadRequestException("category already exists");
+                }
+
+                c.Name = categoryUpdate.Name;
+                c = await _categoryRepository.UpdateAsync(c);
+            }
+
             return await Task.FromResult(c.ToResponse());
         }
 

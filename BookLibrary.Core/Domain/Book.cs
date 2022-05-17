@@ -13,7 +13,8 @@ namespace BookLibrary.Core.Domain
         [StringLength(maximumLength: 100)]
         public string Title { get; set; }
 
-        public DateTime ReleaseDate { get; set; }
+        [Range(0, 2022)]
+        public int? ReleaseYear { get; set; }
 
         [StringLength(maximumLength: 500)]
         public string Description { get; set; }
