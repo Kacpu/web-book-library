@@ -1,0 +1,96 @@
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+@use '@angular/material' as mat;
+// Plus imports for other components in your app.
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat.core();
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+
+$scarlet-palette: (
+  50: #f7e8ea,
+  100: #ebc6ca,
+  200: #cf8f90,
+  300: #d05d5d,
+  400: #bd4a47,
+  500: #bc3a30,
+  600: #9e2b29,
+  700: #9e2b29,
+  800: #912623,
+  900: #0c0403,
+  contrast: (
+    50: rgba(black, 0.87),
+    100: rgba(black, 0.87),
+    200: rgba(black, 0.87),
+    300: white,
+    400: white,
+    500: white,
+    600: white,
+    700: white,
+    800: white,
+    900: white,
+  )
+);
+
+$beige-palette: (
+  50: #e0d8c6,
+  100: #b0a890,
+  200: #ddd4b0,
+  300: #bbb195,
+  400: #d3bcbc,
+  500: white,
+  600: white,
+  700: white,
+  800: white,
+  900: #695942,
+  contrast: (
+    50: rgba(black, 0.87),
+    100: rgba(black, 0.87),
+    200: rgba(black, 0.87),
+    300: white,
+    400: white,
+    500: white,
+    600: white,
+    700: white,
+    800: white,
+    900: white,
+  )
+);
+
+$primary: mat.define-palette($scarlet-palette, 300);
+$accent: mat.define-palette($beige-palette, 900);
+$dark: mat.define-palette($scarlet-palette, 900);
+
+// The warn palette is optional (defaults to red).
+$warn: mat.define-palette(mat.$red-palette);
+
+// Create the theme object. A theme consists of configurations for individual
+// theming systems such as "color" or "typography".
+$theme: mat.define-light-theme((
+  color: (
+    primary: $primary,
+    accent: $accent,
+    warn: $warn,
+    dark: $dark
+  )
+));
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include mat.all-component-themes($theme);
+
+:root {
+  --color-primary: #{mat.get-color-from-palette($primary)};
+  --color-accent: #{mat.get-color-from-palette($accent)};
+  --accept: #6b7958;
+  --bg: #f6ecdc;
+  //--color-warn: #{mat-color($app-warn)};
+  //--color-success: #{mat-color($app-success)};
+}
+

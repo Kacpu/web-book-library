@@ -1,0 +1,12 @@
+.nav {
+  display: flex;
+  justify-content: space-between;
+  box-shadow:  0 5px 8px 0 rgba(0,0,0,.3);
+}
+
+.button {
+  font-size: 18px;
+}
+
+.button:hover {
+}
