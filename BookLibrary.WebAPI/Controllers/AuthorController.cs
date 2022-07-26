@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace BookLibrary.WebAPI.Controllers
 {
     [ApiController]
-    [Route("[Controller]")]
+    [Route("[controller]")]
     public class AuthorController : Controller
     {
         private readonly IAuthorService _authorService;

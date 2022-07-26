@@ -14,26 +14,30 @@ import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {ReactiveFormsModule} from "@angular/forms";
 import {MatIconModule} from "@angular/material/icon";
+import { BookListComponent } from './book-list/book-list.component';
+import {MatGridListModule} from "@angular/material/grid-list";
 
 @NgModule({
   declarations: [
     AppComponent,
     TopBarComponent,
-    AuthFormComponent
+    AuthFormComponent,
+    BookListComponent
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    MatSliderModule,
-    MatToolbarModule,
-    MatButtonModule,
-    MatTabsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    ReactiveFormsModule,
-    MatIconModule
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        MatSliderModule,
+        MatToolbarModule,
+        MatButtonModule,
+        MatTabsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        ReactiveFormsModule,
+        MatIconModule,
+        MatGridListModule
+    ],
   providers: [],
   bootstrap: [AppComponent]
 })

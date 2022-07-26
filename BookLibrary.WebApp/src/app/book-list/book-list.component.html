@@ -1,0 +1,13 @@
+<div class="container">
+  <mat-grid-list cols="4" rowHeight="200" gutterSize="30" class="grid">
+    <div *ngFor="let book of books">
+      <mat-grid-tile>
+        <div class="box">
+          <div class="photo" [style.background]="book.color"></div>
+          <span class="title">{{book.title}}</span>
+        </div>
+      </mat-grid-tile>
+    </div>
+  </mat-grid-list>
+</div>
+

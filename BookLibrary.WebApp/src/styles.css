@@ -9,3 +9,8 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
   background-color: var(--bg);
 }
+
+a, a:hover, a:focus, a:active {
+  text-decoration: none;
+  color: inherit;
+}
