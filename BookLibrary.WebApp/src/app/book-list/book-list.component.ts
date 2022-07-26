@@ -13,21 +13,13 @@ export class BookListComponent implements OnInit {
   }
 
   books = [
-    {title: "some title", color: "red"},
-    {title: "some title", color: "red"},
-    {title: "some title", color: "red"},
-    {title: "some title", color: "red"},
-    {title: "some title", color: "red"},
-    {title: "some title", color: "red"},
-    {title: "some title", color: "red"},
-    {title: "some title", color: "red"},
-    {title: "some title", color: "red"},
-    {title: "some title", color: "red"},
-    {title: "some title", color: "red"},
-    {title: "some titleeeeeeeddddddddddd", color: "red"},
-    {title: "some title", color: "red"},
-    {title: "some title", color: "red"},
-    {title: "some title", color: "red"},
+    {title: "some title", url: "https://static01.helion.com.pl/global/okladki/326x466/ukrcza.jpg"},
+    {title: "some title", url: "https://static01.helion.com.pl/global/okladki/326x466/ukrcza.jpg"},
+    {title: "some title lorem impsum asiasissssjjjjhhhaisnianinaisninais", url: "https://static01.helion.com.pl/global/okladki/326x466/ukrcza.jpg"},
+    {title: "some title", url: "https://static01.helion.com.pl/global/okladki/326x466/ukrcza.jpg"},
+    {title: "some title", url: "https://static01.helion.com.pl/global/okladki/326x466/ukrcza.jpg"},
+    {title: "some title", url: "https://static01.helion.com.pl/global/okladki/326x466/ukrcza.jpg"},
+    {title: "some title", url: "https://static01.helion.com.pl/global/okladki/326x466/ukrcza.jpg"},
   ]
 
 }

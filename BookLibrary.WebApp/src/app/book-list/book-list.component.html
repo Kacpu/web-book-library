@@ -1,13 +1,9 @@
-<div class="container">
-  <mat-grid-list cols="4" rowHeight="200" gutterSize="30" class="grid">
-    <div *ngFor="let book of books">
-      <mat-grid-tile>
-        <div class="box">
-          <div class="photo" [style.background]="book.color"></div>
-          <span class="title">{{book.title}}</span>
-        </div>
-      </mat-grid-tile>
+<div class="pb-5">
+  <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-5 w-5/6 mx-auto mt-10">
+    <div *ngFor="let book of books" class=" w-full flex flex-col p-3 items-center book-shadow transition-shadow duration-500">
+        <img class="w-40 h-56" [src]="book.url" alt="cover"/>
+        <p class="w-full text-xl mt-2 text-center break-words">{{book.title}}</p>
     </div>
-  </mat-grid-list>
+  </div>
 </div>
 

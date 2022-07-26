@@ -16,13 +16,15 @@ import {ReactiveFormsModule} from "@angular/forms";
 import {MatIconModule} from "@angular/material/icon";
 import { BookListComponent } from './book-list/book-list.component';
 import {MatGridListModule} from "@angular/material/grid-list";
+import { AutocompleteSearchBarComponent } from './autocomplete-search-bar/autocomplete-search-bar.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     TopBarComponent,
     AuthFormComponent,
-    BookListComponent
+    BookListComponent,
+    AutocompleteSearchBarComponent
   ],
     imports: [
         BrowserModule,
