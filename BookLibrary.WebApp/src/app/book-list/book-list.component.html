@@ -1,9 +1,21 @@
-<div class="pb-5">
-  <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-5 w-5/6 mx-auto mt-10">
-    <div *ngFor="let book of books" class=" w-full flex flex-col p-3 items-center book-shadow transition-shadow duration-500">
+<div class="py-5">
+  <div class="w-3/4 md:w-3/4 mx-auto py-5">
+    <app-autocomplete-search-bar
+      [options]="books"
+      [searchLabel]="'Search for books'"
+      (searchResultChange)="filteredBooks=toBooks($event)"
+    >
+    </app-autocomplete-search-bar>
+  </div>
+  <div *ngIf="filteredBooks.length > 0; else noBooks" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-5 w-5/6 mx-auto mt-10">
+    <div *ngFor="let book of filteredBooks"
+         class=" w-full flex flex-col p-3 pt-4 items-center book-shadow transition-shadow duration-500">
         <img class="w-40 h-56" [src]="book.url" alt="cover"/>
         <p class="w-full text-xl mt-2 text-center break-words">{{book.title}}</p>
     </div>
   </div>
+  <ng-template #noBooks>
+      <p class="text-center text-stone-400">No books found</p>
+  </ng-template>
 </div>
 

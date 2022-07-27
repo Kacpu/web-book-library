@@ -1,0 +1,11 @@
+<mat-form-field class="w-full" appearance="fill">
+  <mat-label>{{searchLabel}}</mat-label>
+  <input type="text" matInput [formControl]="searchControl" [matAutocomplete]="auto"
+         #trigger="matAutocompleteTrigger" (keyup.enter)="onSubmit($event); trigger.closePanel()">
+  <mat-icon matSuffix color="primary">search</mat-icon>
+    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+        <mat-option *ngFor="let option of filteredOptionsObservable | async" [value]="option" (click)="onSubmit($event)">
+          {{option.searchValue}}
+        </mat-option>
+    </mat-autocomplete>
+</mat-form-field>

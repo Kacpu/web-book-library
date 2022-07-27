@@ -62,8 +62,8 @@ $beige-palette: (
   )
 );
 
-$primary: mat.define-palette($scarlet-palette, 300);
-$accent: mat.define-palette($beige-palette, 900);
+$primary: mat.define-palette($beige-palette, 900);
+$accent: mat.define-palette($scarlet-palette, 300);
 $dark: mat.define-palette($scarlet-palette, 900);
 
 // The warn palette is optional (defaults to red).

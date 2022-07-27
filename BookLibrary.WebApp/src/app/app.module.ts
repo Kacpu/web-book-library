@@ -17,6 +17,7 @@ import {MatIconModule} from "@angular/material/icon";
 import { BookListComponent } from './book-list/book-list.component';
 import {MatGridListModule} from "@angular/material/grid-list";
 import { AutocompleteSearchBarComponent } from './autocomplete-search-bar/autocomplete-search-bar.component';
+import {MatAutocompleteModule} from "@angular/material/autocomplete";
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { AutocompleteSearchBarComponent } from './autocomplete-search-bar/autoco
         MatInputModule,
         ReactiveFormsModule,
         MatIconModule,
-        MatGridListModule
+        MatGridListModule,
+        MatAutocompleteModule
     ],
   providers: [],
   bootstrap: [AppComponent]
