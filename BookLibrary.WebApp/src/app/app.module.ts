@@ -3,21 +3,22 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { TopBarComponent } from './top-bar/top-bar.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatSliderModule} from "@angular/material/slider";
 import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatButtonModule} from "@angular/material/button";
-import { AuthFormComponent } from './auth-form/auth-form.component';
 import {MatTabsModule} from "@angular/material/tabs";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {ReactiveFormsModule} from "@angular/forms";
 import {MatIconModule} from "@angular/material/icon";
-import { BookListComponent } from './book-list/book-list.component';
 import {MatGridListModule} from "@angular/material/grid-list";
-import { AutocompleteSearchBarComponent } from './autocomplete-search-bar/autocomplete-search-bar.component';
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
+import {AuthFormComponent} from "./components/auth-form/auth-form.component";
+import {AutocompleteSearchBarComponent} from "./components/autocomplete-search-bar/autocomplete-search-bar.component";
+import {BookListComponent} from "./components/book-list/book-list.component";
+import {TopBarComponent} from "./components/top-bar/top-bar.component";
+import {HttpClientModule} from "@angular/common/http";
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import {MatAutocompleteModule} from "@angular/material/autocomplete";
   ],
     imports: [
         BrowserModule,
+        HttpClientModule,
         AppRoutingModule,
         BrowserAnimationsModule,
         MatSliderModule,

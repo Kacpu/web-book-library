@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormControl} from "@angular/forms";
 import {map, Observable, startWith} from "rxjs";
-import {Searchable} from "../interfaces/searchable";
+import {Searchable} from "../../interfaces/searchable";
 
 @Component({
   selector: 'app-autocomplete-search-bar',
@@ -35,10 +35,10 @@ export class AutocompleteSearchBarComponent implements OnInit {
     );
   }
 
-  private _filter(name: string): Searchable[] {
-    const filterValue = name.toLowerCase();
+  private _filter(value: string): Searchable[] {
+    const filterValue = value.toLowerCase();
 
-    return this.options.filter(option => option.searchValue.toLowerCase().includes(filterValue));
+    return this.options.filter(option => option.searchValue?.toLowerCase().includes(filterValue));
   }
 
   displayFn(option: Searchable) {

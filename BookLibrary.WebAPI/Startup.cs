@@ -38,7 +38,7 @@ namespace BookLibrary.WebAPI
                 options.AddPolicy("CorsPolicy",
                                   builder =>
                                   {
-                                      builder.WithOrigins("http://localhost:3000")
+                                      builder.WithOrigins("http://localhost:3000", "http://localhost:4200")
                                       .AllowAnyMethod()
                                       .AllowAnyHeader();
                                   });

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import {AuthFormComponent} from "./auth-form/auth-form.component";
-import {BookListComponent} from "./book-list/book-list.component";
+import {BookListComponent} from "./components/book-list/book-list.component";
+import {AuthFormComponent} from "./components/auth-form/auth-form.component";
 
 const routes: Routes = [
   {path: '', component: BookListComponent},
