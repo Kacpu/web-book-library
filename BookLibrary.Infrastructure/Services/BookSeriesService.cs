@@ -18,14 +18,14 @@ namespace BookLibrary.Infrastructure.Services
     {
         private readonly IRepository<BookSeries> _bookSeriesRepository;
 
-        public BookSeriesService(IRepository<BookSeries> bookSeriesReposiotry)
+        public BookSeriesService(IRepository<BookSeries> bookSeriesRepository)
         {
-            _bookSeriesRepository = bookSeriesReposiotry;
+            _bookSeriesRepository = bookSeriesRepository;
         }
 
         public async Task<BookSeriesResponse> GetByIdAsync(int id)
         {
-            string[] includeProperties = { "Books"};
+            string[] includeProperties = {"Books"};
 
             var bookSeries = await _bookSeriesRepository.GetByIdAsync(id, includeProperties);
 

@@ -1,6 +1,6 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {FormControl} from "@angular/forms";
-import {map, Observable, startWith} from "rxjs";
+import {map, Observable, startWith, Subscription, tap} from "rxjs";
 import {Searchable} from "../../interfaces/searchable";
 
 @Component({
@@ -8,37 +8,103 @@ import {Searchable} from "../../interfaces/searchable";
   templateUrl: './autocomplete-search-bar.component.html',
   styleUrls: ['./autocomplete-search-bar.component.css']
 })
-export class AutocompleteSearchBarComponent implements OnInit {
+export class AutocompleteSearchBarComponent implements OnInit, OnDestroy {
 
-  @Input() options: Searchable[] = [];
   @Input() searchLabel: string = 'Search';
+  @Input() options$!: Observable<Searchable[]>;
 
-  @Output() searchResultChange = new EventEmitter<Searchable[]>();
+  @Output() fetchOptions = new EventEmitter<string>();
+  @Output() search = new EventEmitter<string>();
 
   searchControl = new FormControl<string | Searchable>('');
-  filteredOptionsObservable!: Observable<Searchable[]>;
-  filteredValues: Searchable[] = [];
+  filterValue: string = '';
 
-  ngOnInit() {
-    this.filteredOptionsObservable = this.searchControl.valueChanges.pipe(
-      startWith(''),
-      map(value => {
-        const filterValue = typeof value === 'string'? value : value?.searchValue;
-        this.filteredValues = filterValue ? this._filter(filterValue) : this.options;
+  optionsFiltered$!: Observable<Searchable[]>;
+  @Input() options: Searchable[] | undefined;
 
-        if(value === '') {
-          this.searchResultChange.emit(this.filteredValues);
-        }
+  subscription: Subscription = new Subscription();
 
-        return filterValue ? this.filteredValues : [];
+  ngOnInit(): void {
+    this.optionsFiltered$ = this.searchControl.valueChanges.pipe(
+      startWith(this.filterValue),
+      tap(value => {
+        //console.log("onchange " + this.searchControl.value)
+
+        //this.filterValue = typeof value === 'string' ? value : value?.searchValue ? value.searchValue : '';
+
+        // if (this.filterValue?.length === 3) {
+        //   this.fetchOptions.emit(this.filterValue);
+        // }
+
+        // if (this.filterValue === '') {
+        //   this.search.emit(this.filterValue);
+        // }
       }),
+      map(value => {
+        return this.filter()
+      })
     );
+
+    this.subscription.add(this.searchControl.valueChanges.subscribe(value => {
+      // console.log(this.options)
+
+      // console.log("onchange " + this.searchControl.value)
+
+      this.filterValue = typeof value === 'string' ? value : value?.searchValue ? value.searchValue : '';
+
+      if (this.filterValue?.length === 3) {
+        this.fetchOptions.emit(this.filterValue);
+        this.options = undefined;
+        console.log(this.options)
+      }
+
+      if (this.filterValue === '') {
+        this.search.emit(this.filterValue);
+      }
+    }));
   }
 
-  private _filter(value: string): Searchable[] {
-    const filterValue = value.toLowerCase();
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
 
-    return this.options.filter(option => option.searchValue?.toLowerCase().includes(filterValue));
+  onSearchControlChange() {
+    // console.log("onchange " + this.searchControl.value)
+    //
+    // const value = this.searchControl.value;
+    // this.filterValue = typeof value === 'string' ? value : value?.searchValue ? value.searchValue : '';
+    //
+    // if (this.filterValue && this.filterValue.length === 1) {
+    //   this.fetchOptions.emit(this.filterValue);
+    // }
+    //
+    // if (this.filterValue === '') {
+    //   this.search.emit(this.filterValue);
+    // }
+  }
+
+  // private _filter(value: string): Searchable[] {
+  //   const filterValue = value.toLowerCase();
+  //
+  //   return this.options!.filter(option => option.searchValue?.toLowerCase().includes(filterValue));
+  // }
+
+  // filter(options: Searchable[]): Searchable[] {
+  //   console.log("filter " + this.filterValue)
+  //   if (this.filterValue.length > 2) {
+  //     return options.filter(option => option.searchValue?.toLowerCase().includes(this.filterValue.toLowerCase()));
+  //   } else {
+  //     return [];
+  //   }
+
+
+  filter(): Searchable[] {
+    console.log("filter " + this.filterValue)
+    if (this.options && this.filterValue.length > 2) {
+      return this.options.filter(option => option.searchValue?.toLowerCase().includes(this.filterValue.toLowerCase()));
+    } else {
+      return [];
+    }
   }
 
   displayFn(option: Searchable) {
@@ -47,8 +113,8 @@ export class AutocompleteSearchBarComponent implements OnInit {
 
   onSubmit(event: Event) {
     event.preventDefault();
-
-    this.searchResultChange.emit(this.filteredValues);
+    console.log(this.searchControl.value)
+    this.search.emit(this.filterValue);
     // this.searchControl.setValue('');
   }
 }

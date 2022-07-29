@@ -1,11 +1,27 @@
 <mat-form-field class="w-full" appearance="fill">
   <mat-label>{{searchLabel}}</mat-label>
   <input type="text" matInput [formControl]="searchControl" [matAutocomplete]="auto"
-         #trigger="matAutocompleteTrigger" (keyup.enter)="onSubmit($event); trigger.closePanel()">
+         #trigger="matAutocompleteTrigger" (keyup.enter)="onSubmit($event); trigger.closePanel()"
+         (input)="onSearchControlChange()">
   <mat-icon matSuffix color="primary">search</mat-icon>
     <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
-        <mat-option *ngFor="let option of filteredOptionsObservable | async" [value]="option" (click)="onSubmit($event)">
+<!--      <ng-container *ngIf="options$ | async as options">-->
+      <ng-container *ngIf="options">
+        <mat-option *ngFor="let option of optionsFiltered$ | async" [value]="option" (click)="onSubmit($event)">
           {{option.searchValue}}
         </mat-option>
+
+
+<!--        <ng-container *ngIf="filterValue.length === 1; else filterTemp">-->
+<!--          <mat-option *ngFor="let option of options" [value]="option" (click)="onSubmit($event)">-->
+<!--            {{option.searchValue}}-->
+<!--          </mat-option>-->
+<!--        </ng-container>-->
+<!--        <ng-template #filterTemp>-->
+<!--          <mat-option *ngFor="let option of filter(options)" [value]="option" (click)="onSubmit($event)">-->
+<!--            {{option.searchValue}}-->
+<!--          </mat-option>-->
+<!--        </ng-template>-->
+      </ng-container>
     </mat-autocomplete>
 </mat-form-field>

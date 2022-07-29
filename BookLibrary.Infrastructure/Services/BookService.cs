@@ -46,7 +46,8 @@ namespace BookLibrary.Infrastructure.Services
 
             if (!string.IsNullOrEmpty(title))
             {
-                filter = filter.And(book => book.Title.Contains(title));
+                filter = title.Length >= 3 ? filter.And(book => book.Title.Contains(title)) 
+                    : filter.And(book => book.Title.StartsWith(title));
             }
 
             if (authorId != null)

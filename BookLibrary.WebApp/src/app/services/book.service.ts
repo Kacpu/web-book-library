@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
-import {Book} from "../interfaces/book";
+import {Book, BookShortData} from "../interfaces/book";
 import {catchError, map, retry} from 'rxjs/operators';
 import {throwError} from "rxjs";
+import {Searchable} from "../interfaces/searchable";
 
 @Injectable({
   providedIn: 'root'
@@ -13,10 +14,19 @@ export class BookService {
 
   constructor(private http: HttpClient) { }
 
-  getBooks() {
-    return this.http.get<Book[]>(this.serverUrl + '/book')
+  getBooks(title: string) {
+    return this.http.get<Book[]>(this.serverUrl + `/book?title=${title}`)
       .pipe(
         map(this._mapper),
+        retry(3),
+        catchError(this._handleError)
+      );
+  }
+
+  getBooksShortData(title: string) {
+    return this.http.get<BookShortData[]>(this.serverUrl + `/book?title=${title}`)
+      .pipe(
+        map(this._shortDataMapper),
         retry(3),
         catchError(this._handleError)
       );
@@ -36,7 +46,13 @@ export class BookService {
       publisherId: book.publisherId,
       publisherName: book.publisherName,
       releaseYear: book.releaseYear,
-      searchValue: book.title,
+    };
+  });
+
+  private _shortDataMapper = (res: BookShortData[]): BookShortData[] => res.map(book => {
+    return {
+      title: book.title,
+      searchValue: book.title
     };
   });
 

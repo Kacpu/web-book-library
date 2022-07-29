@@ -1,6 +1,6 @@
 import {Searchable} from "./searchable";
 
-export interface Book extends Searchable {
+export interface Book {
   id: number,
   title: string;
   releaseYear: number | undefined;
@@ -13,4 +13,8 @@ export interface Book extends Searchable {
   publisherName: string;
   bookSeriesId: number | undefined;
   bookSeriesName: string;
+}
+
+export interface BookShortData extends Searchable {
+  title: string;
 }
