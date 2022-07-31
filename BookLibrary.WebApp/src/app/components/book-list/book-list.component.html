@@ -2,8 +2,7 @@
   <div class="w-3/4 md:w-3/4 mx-auto py-5">
     <app-autocomplete-search-bar
       [searchLabel]="'Search for books'"
-      [options$]="bookSearchOptions$"
-      [options]="options"
+      [options]="bookSearchOptions"
       (fetchOptions)="onFetchOptions($event)"
       (search)="onSearch($event)"
     >

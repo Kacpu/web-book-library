@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {Book, BookShortData} from "../interfaces/book";
-import {catchError, map, retry} from 'rxjs/operators';
+import {catchError, map, retry, shareReplay} from 'rxjs/operators';
 import {throwError} from "rxjs";
 import {Searchable} from "../interfaces/searchable";
 
@@ -17,8 +17,9 @@ export class BookService {
   getBooks(title: string) {
     return this.http.get<Book[]>(this.serverUrl + `/book?title=${title}`)
       .pipe(
+        shareReplay(),
         map(this._mapper),
-        retry(3),
+        // retry(3),
         catchError(this._handleError)
       );
   }
@@ -26,6 +27,7 @@ export class BookService {
   getBooksShortData(title: string) {
     return this.http.get<BookShortData[]>(this.serverUrl + `/book?title=${title}`)
       .pipe(
+        shareReplay(),
         map(this._shortDataMapper),
         retry(3),
         catchError(this._handleError)

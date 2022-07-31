@@ -11,9 +11,9 @@ import {Observable} from "rxjs";
 export class BookListComponent implements OnInit {
 
   books$!: Observable<Book[]>;
-  bookSearchOptions$!: Observable<BookShortData[]>;
 
-  options: BookShortData[] | undefined;
+  bookSearchOptions: BookShortData[] | undefined;
+  // bookSearchOptions$!: Observable<BookShortData[]>;
 
   constructor(private bookService: BookService) { }
 
@@ -22,21 +22,11 @@ export class BookListComponent implements OnInit {
   }
 
   onFetchOptions(filter: string) {
-    this.bookSearchOptions$ = this.bookService.getBooksShortData(filter);
-
-    this.bookService.getBooksShortData(filter).subscribe(value => this.options = value)
+    this.bookService.getBooksShortData(filter).subscribe(value => this.bookSearchOptions = value);
+    // this.bookSearchOptions$ = this.bookService.getBooksShortData(filter);
   }
 
   onSearch(filter: string) {
-    console.log("book filter " + filter);
     this.books$ = this.bookService.getBooks(filter);
   }
-
-  // toBooks(objects: object[]) {
-  //   if(objects.length > 0 && "title" in objects[0]) {
-  //     return objects as Book[];
-  //   } else {
-  //     return [];
-  //   }
-  // }
 }
