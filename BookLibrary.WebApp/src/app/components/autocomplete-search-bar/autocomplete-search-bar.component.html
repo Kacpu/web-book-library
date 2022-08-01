@@ -2,19 +2,24 @@
   <mat-label>{{searchLabel}}</mat-label>
   <input type="text" matInput [formControl]="searchControl" [matAutocomplete]="auto"
          #trigger="matAutocompleteTrigger" (keyup.enter)="onSubmit($event); trigger.closePanel()">
-  <mat-icon matSuffix color="primary">search</mat-icon>
-    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
-      <ng-container *ngIf="options">
-        <ng-container *ngIf="filterValue.length == 3">
-          <mat-option *ngFor="let option of options" [value]="option" (click)="onSubmit($event)">
-            {{option.searchValue}}
-          </mat-option>
-        </ng-container>
-        <ng-container *ngIf="filterValue.length > 3">
-          <mat-option *ngFor="let option of filteredOptions$ | async" [value]="option" (click)="onSubmit($event)">
-            {{option.searchValue}}
-          </mat-option>
-        </ng-container>
+  <button mat-icon-button matPrefix class="!mr-2" (click)="onSubmit($event); trigger.closePanel()">
+    <mat-icon color="primary">search</mat-icon>
+  </button>
+  <button mat-icon-button matSuffix (click)="onClear()">
+    <mat-icon color="primary">close</mat-icon>
+  </button>
+  <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+    <ng-container *ngIf="options">
+      <ng-container *ngIf="filterValue.length == 3">
+        <mat-option *ngFor="let option of options" [value]="option" (click)="onSubmit($event)">
+          {{option.searchValue}}
+        </mat-option>
       </ng-container>
-    </mat-autocomplete>
+      <ng-container *ngIf="filterValue.length > 3">
+        <mat-option *ngFor="let option of filteredOptions$ | async" [value]="option" (click)="onSubmit($event)">
+          {{option.searchValue}}
+        </mat-option>
+      </ng-container>
+    </ng-container>
+  </mat-autocomplete>
 </mat-form-field>

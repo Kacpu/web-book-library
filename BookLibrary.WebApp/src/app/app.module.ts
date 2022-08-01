@@ -19,6 +19,7 @@ import {AutocompleteSearchBarComponent} from "./components/autocomplete-search-b
 import {BookListComponent} from "./components/book-list/book-list.component";
 import {TopBarComponent} from "./components/top-bar/top-bar.component";
 import {HttpClientModule} from "@angular/common/http";
+import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import {HttpClientModule} from "@angular/common/http";
         ReactiveFormsModule,
         MatIconModule,
         MatGridListModule,
-        MatAutocompleteModule
+        MatAutocompleteModule,
+        MatProgressSpinnerModule
     ],
   providers: [],
   bootstrap: [AppComponent]

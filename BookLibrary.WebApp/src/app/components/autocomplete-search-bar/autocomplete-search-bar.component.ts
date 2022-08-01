@@ -1,7 +1,8 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
 import {FormControl} from "@angular/forms";
 import {map, Observable, startWith, Subscription, tap} from "rxjs";
 import {Searchable} from "../../interfaces/searchable";
+import {MatAutocompleteTrigger} from "@angular/material/autocomplete";
 
 @Component({
   selector: 'app-autocomplete-search-bar',
@@ -31,8 +32,8 @@ export class AutocompleteSearchBarComponent implements OnInit, OnDestroy {
 
         if (this.filterValue.length === 3) {
           if (this.filterValue.trim().length >= 3) {
-            this.fetchOptions.emit(this.filterValue);
             this.options = undefined;
+            this.fetchOptions.emit(this.filterValue);
           }
           else {
             this.options = [];
@@ -83,6 +84,11 @@ export class AutocompleteSearchBarComponent implements OnInit, OnDestroy {
 
   onSubmit(event: Event) {
     event.preventDefault();
+    event.stopPropagation();
     this.search.emit(this.filterValue);
+  }
+
+  onClear() {
+    this.searchControl.setValue('');
   }
 }
