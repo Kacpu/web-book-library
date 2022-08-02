@@ -4,6 +4,7 @@ import {Book, BookShortData} from "../interfaces/book";
 import {catchError, map, retry, shareReplay} from 'rxjs/operators';
 import {throwError} from "rxjs";
 import {Searchable} from "../interfaces/searchable";
+import {JsonObject} from "@angular/compiler-cli/ngcc/src/utils";
 
 @Injectable({
   providedIn: 'root'
@@ -14,12 +15,22 @@ export class BookService {
 
   constructor(private http: HttpClient) { }
 
+  getBook(id: string) {
+    return this.http.get<Book>(this.serverUrl + `/book/${id}`)
+      .pipe(
+        shareReplay(),
+        map(this._mapper),
+        retry(3),
+        catchError(this._handleError)
+      );
+  }
+
   getBooks(title: string) {
     return this.http.get<Book[]>(this.serverUrl + `/book?title=${title}`)
       .pipe(
         shareReplay(),
-        map(this._mapper),
-        // retry(3),
+        map(res => res.map(this._mapper)),
+        retry(3),
         catchError(this._handleError)
       );
   }
@@ -34,22 +45,12 @@ export class BookService {
       );
   }
 
-  private _mapper = (res: Book[]): Book[] => res.map(book => {
+  private _mapper = (book: Book): Book =>
+  {
     return {
-      id: book.id,
-      title: book.title,
-      author: book.author,
-      authorId: book.authorId,
-      bookSeriesId: book.bookSeriesId,
-      bookSeriesName: book.bookSeriesName,
-      description: book.description,
-      language: book.language,
-      numberOfPages: book.numberOfPages,
-      publisherId: book.publisherId,
-      publisherName: book.publisherName,
-      releaseYear: book.releaseYear,
+      ...book
     };
-  });
+  };
 
   private _shortDataMapper = (res: BookShortData[]): BookShortData[] => res.map(book => {
     return {

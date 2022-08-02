@@ -11,10 +11,10 @@
   <ng-container *ngIf="books$ | async as books; else loading">
     <div *ngIf="books.length > 0; else noBooks"
          class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-5 w-5/6 mx-auto mt-10">
-      <div *ngFor="let book of books"
-           class=" w-full flex flex-col p-3 pt-4 items-center book-shadow transition-shadow duration-500">
+      <div *ngFor="let book of books" [routerLink]="['/books', book.id]"
+           class=" w-full flex flex-col p-3 pt-4 items-center book-shadow transition-shadow duration-500 cursor-pointer">
         <img class="w-40 h-56" src="https://static01.helion.com.pl/global/okladki/326x466/ukrcza.jpg" alt="cover"/>
-        <p class="w-full text-xl mt-3 text-center break-words">{{book.title}}</p>
+        <a class="w-full text-xl mt-3 text-center break-words">{{book.title}}</a>
       </div>
     </div>
     <ng-template #noBooks>
