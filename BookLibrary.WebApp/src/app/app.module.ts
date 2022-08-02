@@ -21,6 +21,7 @@ import {TopBarComponent} from "./components/top-bar/top-bar.component";
 import {HttpClientModule} from "@angular/common/http";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import { BookDetailsComponent } from './components/book-details/book-details.component';
+import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { BookDetailsComponent } from './components/book-details/book-details.com
     AuthFormComponent,
     BookListComponent,
     AutocompleteSearchBarComponent,
-    BookDetailsComponent
+    BookDetailsComponent,
+    PageNotFoundComponent
   ],
     imports: [
         BrowserModule,
