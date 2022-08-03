@@ -3,7 +3,7 @@ import {Searchable} from "./searchable";
 export interface Book {
   id: number,
   title: string;
-  releaseYear: number | undefined;
+  releaseYear: number | null;
   description: string;
   language: string;
   numberOfPages: number;
@@ -11,8 +11,8 @@ export interface Book {
   author: string;
   publisherId: number;
   publisherName: string;
-  bookSeriesId: number | undefined;
-  bookSeriesName: string;
+  bookSeriesId: number | null
+  bookSeriesName: string | null;
 }
 
 export interface BookShortData extends Searchable {

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {Book} from "../../interfaces/book";
 import {ActivatedRoute} from "@angular/router";
 import {BookService} from "../../services/book.service";
-import {Observable} from "rxjs";
+import {Observable, tap} from "rxjs";
 
 @Component({
   selector: 'app-book-details',
@@ -12,6 +12,9 @@ import {Observable} from "rxjs";
 export class BookDetailsComponent implements OnInit {
 
   book$!: Observable<Book>;
+  bookInfo: Map<string, string | number> = new Map<string, string>();
+
+  originalOrder = () => 0
 
   constructor(private route: ActivatedRoute, private bookService: BookService) { }
 
@@ -23,5 +26,14 @@ export class BookDetailsComponent implements OnInit {
     }
 
     this.book$ = this.bookService.getBook(bookId)
+      .pipe(
+        tap(book => {
+          this.bookInfo.set('Autor', book.author);
+          this.bookInfo.set('Wydawnictwo', book.publisherName);
+          this.bookInfo.set('Rok wydania', book.releaseYear ? book.releaseYear : 'Nieznany');
+          this.bookInfo.set('Liczba stron', book.numberOfPages);
+          this.bookInfo.set('Język', book.language);
+        }),
+      )
   }
 }
