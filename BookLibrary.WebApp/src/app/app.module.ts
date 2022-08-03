@@ -22,6 +22,9 @@ import {HttpClientModule} from "@angular/common/http";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import { BookDetailsComponent } from './components/book-details/book-details.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
+import {MatCardModule} from "@angular/material/card";
+import {MatDividerModule} from "@angular/material/divider";
+import { FooterComponent } from './components/footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +34,8 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
     BookListComponent,
     AutocompleteSearchBarComponent,
     BookDetailsComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    FooterComponent
   ],
     imports: [
         BrowserModule,
@@ -48,7 +52,9 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
         MatIconModule,
         MatGridListModule,
         MatAutocompleteModule,
-        MatProgressSpinnerModule
+        MatProgressSpinnerModule,
+        MatCardModule,
+        MatDividerModule
     ],
   providers: [],
   bootstrap: [AppComponent]
