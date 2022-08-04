@@ -1,4 +1,4 @@
-<div class="py-5">
+<div class="py-5 mb-10">
   <div class="w-3/4 md:w-3/4 mx-auto py-5">
     <app-autocomplete-search-bar
       [searchLabel]="'Search for books'"
@@ -8,21 +8,25 @@
     >
     </app-autocomplete-search-bar>
   </div>
-  <ng-container *ngIf="books$ | async as books; else loading">
-    <div *ngIf="books.length > 0; else noBooks"
-         class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-5 w-5/6 mx-auto mt-10">
-      <div *ngFor="let book of books" [routerLink]="['/books', book.id]"
+<!--  <ng-container *ngIf="books$ | async as books; else loading">-->
+    <div *ngIf="loadedBooks.length > 0"
+         class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 w-5/6 mx-auto mt-5"
+         infinite-scroll
+         [infiniteScrollDistance]="1"
+         [infiniteScrollDisabled]="isLoadingDisabled"
+         (scrolled)="onScroll()">
+      <div *ngFor="let book of loadedBooks" [routerLink]="['/books', book.id]"
            class="w-full flex flex-col p-3 pt-4 items-center book-shadow transition-shadow duration-500 cursor-pointer">
-        <img class="w-40 h-56" src="https://static01.helion.com.pl/global/okladki/326x466/ukrcza.jpg" alt="cover"/>
+        <img class="w-40 h-auto" src="https://static01.helion.com.pl/global/okladki/326x466/ukrcza.jpg" alt="cover"/>
         <a class="w-full text-xl mt-3 text-center break-words">{{book.title}}</a>
       </div>
     </div>
-    <ng-template #noBooks>
+    <ng-container *ngIf="!isLoading && loadedBooks.length === 0">
       <p class="text-center text-stone-400">No books found</p>
-    </ng-template>
-  </ng-container>
-  <ng-template #loading>
+    </ng-container>
+<!--  </ng-container>-->
+  <ng-container *ngIf="isLoading">
     <mat-progress-spinner mode="indeterminate" diameter="40" strokeWidth="3" class="mx-auto mt-10"></mat-progress-spinner>
-  </ng-template>
+  </ng-container>
 </div>
 

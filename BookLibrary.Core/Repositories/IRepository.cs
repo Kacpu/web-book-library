@@ -14,11 +14,12 @@ namespace BookLibrary.Core.Repositories
         Task<IEnumerable<T>> BrowseAllAsync(
             Expression<Func<T, bool>> filter = null,
             string[] includeProperties = null,
-            Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null);
+            Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
+            Func<IQueryable<T>, IQueryable<T>> pagination = null);
         Task<T> CreateAsync(T entity);
         Task<T> UpdateAsync(T entity);
         Task DeleteAsync(int id);
-        Task<bool> IsExist<Tcheck>(int id) where Tcheck : Entity;
+        Task<bool> IsExist<TCheck>(int id) where TCheck : Entity;
         Task SaveAsync();
     }
 }

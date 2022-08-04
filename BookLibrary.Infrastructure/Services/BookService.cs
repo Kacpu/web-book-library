@@ -7,6 +7,7 @@ using BookLibrary.Infrastructure.Exceptions;
 using LinqKit;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
@@ -19,15 +20,15 @@ namespace BookLibrary.Infrastructure.Services
         private readonly IRepository<Book> _bookRepository;
         private readonly IRepository<Category> _categoryRepository;
 
-        public BookService(IRepository<Book> bookReposiotry, IRepository<Category> categoryReposiotry)
+        public BookService(IRepository<Book> bookRepository, IRepository<Category> categoryRepository)
         {
-            _bookRepository = bookReposiotry;
-            _categoryRepository = categoryReposiotry;
+            _bookRepository = bookRepository;
+            _categoryRepository = categoryRepository;
         }
 
         public async Task<BookResponse> GetByIdAsync(int id)
         {
-            string[] includeProperties = { "Author", "Publisher", "BookSeries", "Categories" };
+            string[] includeProperties = {"Author", "Publisher", "BookSeries", "Categories"};
 
             var book = await _bookRepository.GetByIdAsync(id, includeProperties);
 
@@ -40,13 +41,14 @@ namespace BookLibrary.Infrastructure.Services
         }
 
         public async Task<IEnumerable<BookResponse>> BrowseAllAsync(string title, int? authorId, int? publisherId,
-            int? bookSeriesId, int? categoryId, int? libraryId)
+            int? bookSeriesId, int? categoryId, int? libraryId, int? skip, int? take)
         {
             Expression<Func<Book, bool>> filter = PredicateBuilder.New<Book>(true);
 
             if (!string.IsNullOrEmpty(title))
             {
-                filter = title.Length >= 3 ? filter.And(book => book.Title.Contains(title)) 
+                filter = title.Length >= 3
+                    ? filter.And(book => book.Title.Contains(title))
                     : filter.And(book => book.Title.StartsWith(title));
             }
 
@@ -75,25 +77,34 @@ namespace BookLibrary.Infrastructure.Services
                 filter = filter.And(book => book.Libraries.Any(l => l.Id == libraryId));
             }
 
-            string[] includeProperties = { "Author", "Publisher", "BookSeries", "Categories" };
+            string[] includeProperties = {"Author", "Publisher", "BookSeries", "Categories"};
 
-            var books = await _bookRepository.BrowseAllAsync(filter, includeProperties);
+            Func<IQueryable<Book>, IQueryable<Book>> pagination = null;
+            if (skip != null && take != null)
+            {
+                pagination = q => q.OrderBy(b => b.Id).Skip(skip.Value).Take(take.Value);
+            }
+
+            var books = await _bookRepository
+                .BrowseAllAsync(filter, includeProperties, pagination: pagination);
+            
             return await Task.FromResult(books.Select(x => x.ToResponse()));
         }
 
         public async Task<BookResponse> CreateAsync(BookCreate bookCreate)
         {
-            if(! await _bookRepository.IsExist<Author>(bookCreate.AuthorId))
+            if (!await _bookRepository.IsExist<Author>(bookCreate.AuthorId))
             {
                 throw new NotFoundException("author not found");
             }
 
-            if (! await _bookRepository.IsExist<Publisher>(bookCreate.PublisherId))
+            if (!await _bookRepository.IsExist<Publisher>(bookCreate.PublisherId))
             {
                 throw new NotFoundException("publisher not found");
             }
 
-            if (bookCreate.BookSeriesId != null && ! await _bookRepository.IsExist<BookSeries>(bookCreate.BookSeriesId.Value))
+            if (bookCreate.BookSeriesId != null &&
+                !await _bookRepository.IsExist<BookSeries>(bookCreate.BookSeriesId.Value))
             {
                 throw new NotFoundException("book series not found");
             }
@@ -120,7 +131,7 @@ namespace BookLibrary.Infrastructure.Services
 
         public async Task<BookResponse> UpdateAsync(int id, BookUpdate bookUpdate)
         {
-            string[] includeProperties = { "Categories" };
+            string[] includeProperties = {"Categories"};
             var b = await _bookRepository.GetByIdAsync(id, includeProperties);
 
             if (b is null)
@@ -133,12 +144,14 @@ namespace BookLibrary.Infrastructure.Services
                 throw new NotFoundException("author not found");
             }
 
-            if (bookUpdate.PublisherId != null && !await _bookRepository.IsExist<Publisher>(bookUpdate.PublisherId.Value))
+            if (bookUpdate.PublisherId != null &&
+                !await _bookRepository.IsExist<Publisher>(bookUpdate.PublisherId.Value))
             {
                 throw new NotFoundException("publisher not found");
             }
 
-            if (bookUpdate.BookSeriesId != null && !await _bookRepository.IsExist<Author>(bookUpdate.BookSeriesId.Value))
+            if (bookUpdate.BookSeriesId != null &&
+                !await _bookRepository.IsExist<Author>(bookUpdate.BookSeriesId.Value))
             {
                 throw new NotFoundException("book series not found");
             }
@@ -155,7 +168,7 @@ namespace BookLibrary.Infrastructure.Services
             if (!string.IsNullOrEmpty(bookUpdate.Title) || bookUpdate.AuthorId != null)
             {
                 var books = await _bookRepository
-                .BrowseAllAsync(x => x.Title == b.Title && x.AuthorId == b.AuthorId);
+                    .BrowseAllAsync(x => x.Title == b.Title && x.AuthorId == b.AuthorId);
 
                 if (books.Any())
                 {

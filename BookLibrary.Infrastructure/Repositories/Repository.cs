@@ -37,7 +37,7 @@ namespace BookLibrary.Infrastructure.Repositories
         }
 
         public async Task<IEnumerable<T>> BrowseAllAsync(Expression<Func<T, bool>> filter, string[] includeProperties,
-            Func<IQueryable<T>, IOrderedQueryable<T>> orderBy)
+            Func<IQueryable<T>, IOrderedQueryable<T>> orderBy, Func<IQueryable<T>, IQueryable<T>> pagination)
         {
             IQueryable<T> query = _dbSet;
 
@@ -52,6 +52,11 @@ namespace BookLibrary.Infrastructure.Repositories
                 {
                     query = query.Include(includeProperty);
                 }
+            }
+
+            if (pagination != null)
+            {
+                query = pagination(query);
             }
 
             if (orderBy != null)

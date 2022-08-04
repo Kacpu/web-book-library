@@ -25,6 +25,7 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
 import {MatCardModule} from "@angular/material/card";
 import {MatDividerModule} from "@angular/material/divider";
 import { FooterComponent } from './components/footer/footer.component';
+import {InfiniteScrollModule} from "ngx-infinite-scroll";
 
 @NgModule({
   declarations: [
@@ -37,25 +38,26 @@ import { FooterComponent } from './components/footer/footer.component';
     PageNotFoundComponent,
     FooterComponent
   ],
-    imports: [
-        BrowserModule,
-        HttpClientModule,
-        AppRoutingModule,
-        BrowserAnimationsModule,
-        MatSliderModule,
-        MatToolbarModule,
-        MatButtonModule,
-        MatTabsModule,
-        MatFormFieldModule,
-        MatInputModule,
-        ReactiveFormsModule,
-        MatIconModule,
-        MatGridListModule,
-        MatAutocompleteModule,
-        MatProgressSpinnerModule,
-        MatCardModule,
-        MatDividerModule
-    ],
+  imports: [
+    BrowserModule,
+    HttpClientModule,
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    MatSliderModule,
+    MatToolbarModule,
+    MatButtonModule,
+    MatTabsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    ReactiveFormsModule,
+    MatIconModule,
+    MatGridListModule,
+    MatAutocompleteModule,
+    MatProgressSpinnerModule,
+    MatCardModule,
+    MatDividerModule,
+    InfiniteScrollModule
+  ],
   providers: [],
   bootstrap: [AppComponent]
 })

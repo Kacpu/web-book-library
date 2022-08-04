@@ -28,10 +28,11 @@ namespace BookLibrary.WebAPI.Controllers
 
         [HttpGet]
         public async Task<IActionResult> BrowseBooks(string title, int? authorId, int? publisherId,
-            int? bookSeriesId, int? categoryId, int? libraryId)
+            int? bookSeriesId, int? categoryId, int? libraryId, int? skip, int? take)
         {
             var b = await _bookService
-                .BrowseAllAsync(title, authorId, publisherId, bookSeriesId, categoryId, libraryId);
+                .BrowseAllAsync(title, authorId, publisherId, bookSeriesId, categoryId, libraryId, skip, take);
+            
             return Json(b);
         }
 
@@ -39,7 +40,7 @@ namespace BookLibrary.WebAPI.Controllers
         public async Task<IActionResult> AddBook([FromBody] BookCreate bookCreate)
         {
             var b = await _bookService.CreateAsync(bookCreate);
-            return CreatedAtAction(nameof(GetBookById), new { id = b.Id }, b);
+            return CreatedAtAction(nameof(GetBookById), new {id = b.Id}, b);
         }
 
         [HttpPut("{id}")]
