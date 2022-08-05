@@ -37,7 +37,7 @@ namespace BookLibrary.Infrastructure.Repositories
         }
 
         public async Task<IEnumerable<T>> BrowseAllAsync(Expression<Func<T, bool>> filter, string[] includeProperties,
-            Func<IQueryable<T>, IOrderedQueryable<T>> orderBy, Func<IQueryable<T>, IQueryable<T>> pagination)
+            Func<IQueryable<T>, IOrderedQueryable<T>> orderBy, int? skip, int? take)
         {
             IQueryable<T> query = _dbSet;
 
@@ -54,14 +54,14 @@ namespace BookLibrary.Infrastructure.Repositories
                 }
             }
 
-            if (pagination != null)
-            {
-                query = pagination(query);
-            }
-
             if (orderBy != null)
             {
                 query = orderBy(query);
+            }
+            
+            if (skip != null && take != null)
+            {
+                query = query.OrderBy(x => x.Id).Skip(skip.Value).Take(take.Value);
             }
 
             return await Task.FromResult(await query.ToListAsync());

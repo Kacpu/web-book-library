@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace BookLibrary.WebAPI.Controllers
 {
@@ -13,10 +14,12 @@ namespace BookLibrary.WebAPI.Controllers
     public class BookController : Controller
     {
         private readonly IBookService _bookService;
+        private readonly ILogger _logger;
 
-        public BookController(IBookService bookService)
+        public BookController(IBookService bookService, ILogger<BookController> logger)
         {
             _bookService = bookService;
+            _logger = logger;
         }
 
         [HttpGet("{id}")]
@@ -28,11 +31,20 @@ namespace BookLibrary.WebAPI.Controllers
 
         [HttpGet]
         public async Task<IActionResult> BrowseBooks(string title, int? authorId, int? publisherId,
-            int? bookSeriesId, int? categoryId, int? libraryId, int? skip, int? take)
+            int? bookSeriesId, int? categoryId, int? libraryId, int? skip, int? take, bool isShort)
         {
             var b = await _bookService
-                .BrowseAllAsync(title, authorId, publisherId, bookSeriesId, categoryId, libraryId, skip, take);
-            
+                .BrowseAllAsync(title, authorId, publisherId, bookSeriesId, categoryId, libraryId, skip, take, isShort);
+
+            if (isShort)
+            {
+                return Json(b.Select(br => new
+                {
+                    Id = br.Id,
+                    Title = br.Title
+                }));
+            }
+
             return Json(b);
         }
 

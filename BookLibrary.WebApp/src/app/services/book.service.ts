@@ -3,8 +3,6 @@ import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {Book, BookShortData} from "../interfaces/book";
 import {catchError, map, retry, shareReplay} from 'rxjs/operators';
 import {throwError} from "rxjs";
-import {Searchable} from "../interfaces/searchable";
-import {JsonObject} from "@angular/compiler-cli/ngcc/src/utils";
 
 @Injectable({
   providedIn: 'root'
@@ -35,11 +33,11 @@ export class BookService {
       );
   }
 
-  getBooksShortData(title: string) {
-    return this.http.get<BookShortData[]>(this.serverUrl + `/book?title=${title}`)
+  getBooksShortData(title: string = '') {
+    return this.http.get<BookShortData[]>(this.serverUrl + `/book?title=${title}&isShort=true`)
       .pipe(
         shareReplay(),
-        map(this._shortDataMapper),
+        map(res => res.map(this._shortDataMapper)),
         retry(3),
         catchError(this._handleError)
       );
@@ -51,12 +49,13 @@ export class BookService {
     };
   };
 
-  private _shortDataMapper = (res: BookShortData[]): BookShortData[] => res.map(book => {
+  private _shortDataMapper = (bookShort: BookShortData): BookShortData => {
     return {
-      title: book.title,
-      searchValue: book.title
+      id: bookShort.id,
+      title: bookShort.title,
+      searchValue: bookShort.title
     };
-  });
+  };
 
   private _handleError(error: HttpErrorResponse) {
     if (error.status === 0) {

@@ -8,25 +8,24 @@
     >
     </app-autocomplete-search-bar>
   </div>
-<!--  <ng-container *ngIf="books$ | async as books; else loading">-->
-    <div *ngIf="loadedBooks.length > 0"
-         class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 w-5/6 mx-auto mt-5"
-         infinite-scroll
-         [infiniteScrollDistance]="1"
-         [infiniteScrollDisabled]="isLoadingDisabled"
-         (scrolled)="onScroll()">
-      <div *ngFor="let book of loadedBooks" [routerLink]="['/books', book.id]"
-           class="w-full flex flex-col p-3 pt-4 items-center book-shadow transition-shadow duration-500 cursor-pointer">
-        <img class="w-40 h-auto" src="https://static01.helion.com.pl/global/okladki/326x466/ukrcza.jpg" alt="cover"/>
-        <a class="w-full text-xl mt-3 text-center break-words">{{book.title}}</a>
-      </div>
+  <div *ngIf="loadedBooks.length > 0"
+       class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 w-5/6 mx-auto mt-5"
+       infinite-scroll
+       [infiniteScrollDistance]="1"
+       [infiniteScrollDisabled]="isLoadingDisabled"
+       (scrolled)="onScroll()">
+    <div *ngFor="let book of loadedBooks" [routerLink]="['/books', book.id]"
+         class="w-full flex flex-col p-3 pt-4 items-center book-shadow transition-shadow duration-500 cursor-pointer">
+      <img class="w-40 h-auto" src="https://static01.helion.com.pl/global/okladki/326x466/ukrcza.jpg" alt="cover"/>
+      <a class="w-full text-xl mt-3 text-center break-words">{{book.title}}</a>
     </div>
-    <ng-container *ngIf="!isLoading && loadedBooks.length === 0">
-      <p class="text-center text-stone-400">No books found</p>
-    </ng-container>
-<!--  </ng-container>-->
+  </div>
+  <ng-container *ngIf="!isLoading && loadedBooks.length === 0">
+    <p class="text-center text-stone-400">No books found</p>
+  </ng-container>
   <ng-container *ngIf="isLoading">
-    <mat-progress-spinner mode="indeterminate" diameter="40" strokeWidth="3" class="mx-auto mt-10"></mat-progress-spinner>
+    <mat-progress-spinner mode="indeterminate" diameter="40" strokeWidth="3"
+                          class="mx-auto mt-10"></mat-progress-spinner>
   </ng-container>
 </div>
 

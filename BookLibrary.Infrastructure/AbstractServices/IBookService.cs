@@ -13,7 +13,7 @@ namespace BookLibrary.Infrastructure.AbstractServices
 
         Task<IEnumerable<BookResponse>> BrowseAllAsync(string title = null, int? authorId = null,
             int? publisherId = null, int? bookSeriesId = null, int? categoryId = null, int? libraryId = null,
-            int? skip = null, int? take = null);
+            int? skip = null, int? take = null, bool isShort = false);
 
         Task<BookResponse> CreateAsync(BookCreate bookCreate);
         Task<BookResponse> UpdateAsync(int id, BookUpdate bookUpdate);

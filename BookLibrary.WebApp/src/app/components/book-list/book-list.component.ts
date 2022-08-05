@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Book, BookShortData} from "../../interfaces/book";
 import {BookService} from "../../services/book.service";
-import {Observable, Subscription} from "rxjs";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-book-list',
@@ -10,8 +10,6 @@ import {Observable, Subscription} from "rxjs";
 })
 export class BookListComponent implements OnInit, OnDestroy {
 
-  // books$!: Observable<Book[]>;
-  // books: Book[] = [];
   loadedBooks: Book[] = [];
   readonly chunkToLoad = 8;
   isLoading = true;
@@ -20,15 +18,12 @@ export class BookListComponent implements OnInit, OnDestroy {
   titleFilter = '';
 
   bookSearchOptions: BookShortData[] | undefined;
-  // bookSearchOptions$!: Observable<BookShortData[]>;
 
   subscriptions: Subscription = new Subscription();
 
-  constructor(private bookService: BookService) {
-  }
+  constructor(private bookService: BookService) {}
 
   ngOnInit(): void {
-    // this.books$ = this.bookService.getBooks('');
     this.initList();
   }
 
@@ -45,14 +40,10 @@ export class BookListComponent implements OnInit, OnDestroy {
   loadBooks() {
     this.isLoading = true;
     const skip = this.loadedBooks.length;
-    // const end = skip + this.chunkToLoad;
 
     const sub = this.bookService.getBooks(this.titleFilter, skip, this.chunkToLoad)
       .subscribe(books => {
-        // this.books = books;
-        // this.loadedBooks.push(...this.books.slice(skip, end));
-
-        if(books.length === 0){
+        if(books.length === 0) {
           this.isLoadingDisabled = true;
         }
 
@@ -64,22 +55,19 @@ export class BookListComponent implements OnInit, OnDestroy {
   }
 
   onSearch(filter: string) {
-    // this.books$ = this.bookService.getBooks(filter);
     this.titleFilter = filter;
     this.initList();
   }
 
   onScroll() {
-    console.log("hi there");
     this.loadBooks();
   }
 
   onFetchOptions(filter: string) {
     const sub = this.bookService.getBooksShortData(filter)
-      .subscribe(options => this.bookSearchOptions = options);
+      .subscribe(options => {this.bookSearchOptions = options
+        console.log(options)});
 
     this.subscriptions.add(sub);
-
-    // this.bookSearchOptions$ = this.bookService.getBooksShortData(filter);
   }
 }

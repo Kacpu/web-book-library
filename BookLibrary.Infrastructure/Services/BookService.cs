@@ -41,7 +41,7 @@ namespace BookLibrary.Infrastructure.Services
         }
 
         public async Task<IEnumerable<BookResponse>> BrowseAllAsync(string title, int? authorId, int? publisherId,
-            int? bookSeriesId, int? categoryId, int? libraryId, int? skip, int? take)
+            int? bookSeriesId, int? categoryId, int? libraryId, int? skip, int? take, bool isShort)
         {
             Expression<Func<Book, bool>> filter = PredicateBuilder.New<Book>(true);
 
@@ -77,17 +77,16 @@ namespace BookLibrary.Infrastructure.Services
                 filter = filter.And(book => book.Libraries.Any(l => l.Id == libraryId));
             }
 
-            string[] includeProperties = {"Author", "Publisher", "BookSeries", "Categories"};
-
-            Func<IQueryable<Book>, IQueryable<Book>> pagination = null;
-            if (skip != null && take != null)
+            string[] includeProperties = null;
+            
+            if (!isShort)
             {
-                pagination = q => q.OrderBy(b => b.Id).Skip(skip.Value).Take(take.Value);
+                includeProperties = new [] {"Author", "Publisher", "BookSeries", "Categories"};
             }
 
             var books = await _bookRepository
-                .BrowseAllAsync(filter, includeProperties, pagination: pagination);
-            
+                .BrowseAllAsync(filter, includeProperties, skip: skip, take: take);
+
             return await Task.FromResult(books.Select(x => x.ToResponse()));
         }
 
@@ -178,7 +177,8 @@ namespace BookLibrary.Infrastructure.Services
 
             if (bookUpdate.CategoriesId != null)
             {
-                var cs = await _categoryRepository.BrowseAllAsync(c => bookUpdate.CategoriesId.Any(id => id == c.Id));
+                var cs = await _categoryRepository
+                    .BrowseAllAsync(c => bookUpdate.CategoriesId.Any(bcId => bcId == c.Id));
                 b.Categories = cs.ToList();
             }
 

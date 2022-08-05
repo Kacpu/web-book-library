@@ -11,11 +11,13 @@ namespace BookLibrary.Core.Repositories
     public interface IRepository<T>
     {
         Task<T> GetByIdAsync(int id, string[] includeProperties = null);
+
         Task<IEnumerable<T>> BrowseAllAsync(
             Expression<Func<T, bool>> filter = null,
             string[] includeProperties = null,
             Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
-            Func<IQueryable<T>, IQueryable<T>> pagination = null);
+            int? skip = null, int? take = null);
+
         Task<T> CreateAsync(T entity);
         Task<T> UpdateAsync(T entity);
         Task DeleteAsync(int id);
