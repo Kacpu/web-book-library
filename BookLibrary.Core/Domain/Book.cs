@@ -24,6 +24,8 @@ namespace BookLibrary.Core.Domain
         public string Language { get; set; }
 
         public int NumberOfPages { get; set; }
+        
+        public Byte[] Cover { get; set; }
 
         public int AuthorId { get; set; }
         public Author Author { get; set; }

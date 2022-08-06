@@ -64,6 +64,7 @@ namespace BookLibrary.Infrastructure.DTO
                 ReleaseYear = book.ReleaseYear,
                 Language = book.Language,
                 NumberOfPages = book.NumberOfPages,
+                CoverDataUrl = book.Cover != null ? "data:image/jpg;base64," + Convert.ToBase64String(book.Cover) : "",
                 AuthorId = book.AuthorId,
                 Author = book.Author?.Name + " " + book.Author?.Surname,
                 PublisherId = book.PublisherId,

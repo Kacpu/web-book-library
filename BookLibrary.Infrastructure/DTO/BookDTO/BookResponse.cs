@@ -15,6 +15,7 @@ namespace BookLibrary.Infrastructure.DTO.BookDTO
         public string Description { get; set; }
         public string Language { get; set; }
         public int NumberOfPages { get; set; }
+        public string CoverDataUrl { get; set; }
 
         public int AuthorId { get; set; }
         public string Author { get; set; }

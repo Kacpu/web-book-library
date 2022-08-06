@@ -3,6 +3,7 @@ import {Searchable} from "./searchable";
 export interface Book {
   id: number;
   title: string;
+  coverDataUrl: string;
   releaseYear: number | null;
   description: string;
   language: string;
