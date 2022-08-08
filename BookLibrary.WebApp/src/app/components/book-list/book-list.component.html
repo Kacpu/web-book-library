@@ -16,7 +16,7 @@
        (scrolled)="onScroll()">
     <div *ngFor="let book of loadedBooks" [routerLink]="['/books', book.id]"
          class="w-full flex flex-col p-3 pt-4 items-center book-shadow transition-shadow duration-500 cursor-pointer">
-      <img class="w-40 h-auto"
+      <img class="h-52 sm:h-56 w-auto"
            src="{{book.coverDataUrl ? book.coverDataUrl : 'https://www.gb-publishingservices.gr/image/cache/catalog/NO%20PIC/NoImage_Available-280x400.png'}}"
            alt="cover"/>
       <p class="w-full text-xl mt-3 text-center break-words">{{book.title}}</p>

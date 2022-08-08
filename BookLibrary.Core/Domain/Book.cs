@@ -10,13 +10,13 @@ namespace BookLibrary.Core.Domain
     public class Book : Entity
     {
         [Required]
-        [StringLength(maximumLength: 100)]
+        [StringLength(maximumLength: 200)]
         public string Title { get; set; }
 
         [Range(0, 2022)]
         public int? ReleaseYear { get; set; }
 
-        [StringLength(maximumLength: 500)]
+        [StringLength(maximumLength: 2000)]
         public string Description { get; set; }
 
         [Required]
