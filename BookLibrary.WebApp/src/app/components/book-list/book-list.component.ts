@@ -12,7 +12,7 @@ export class BookListComponent implements OnInit, OnDestroy {
 
   loadedBooks: Book[] = [];
   readonly chunkToLoad = 8;
-  isLoading = true;
+  isLoading = false;
   isLoadingDisabled = false;
 
   titleFilter = '';
@@ -38,6 +38,10 @@ export class BookListComponent implements OnInit, OnDestroy {
   }
 
   loadBooks() {
+    if (this.isLoading) {
+      return;
+    }
+
     this.isLoading = true;
     const skip = this.loadedBooks.length;
 
